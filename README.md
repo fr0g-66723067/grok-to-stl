@@ -9,6 +9,7 @@ This project demonstrates how to use generative AI (specifically Grok) to create
 - Ready-to-print STL file output
 - Example models and use cases
 - Comprehensive documentation
+- Command-line interface for quick generation
 
 ## 📋 Prerequisites
 
@@ -22,6 +23,7 @@ This project demonstrates how to use generative AI (specifically Grok) to create
 1. Clone this repository: 
 ```bash
 git clone https://github.com/fr0g-66723067/grok-to-stl.git
+cd grok-to-stl
 ```
 
 2. Install required dependencies:
@@ -40,6 +42,8 @@ See the [docs](./docs) directory for comprehensive documentation including:
 
 ## 🎯 Quick Start
 
+### Using Python API
+
 ```python
 from grok_openscad import GrokOpenSCAD
 
@@ -52,6 +56,30 @@ scad_code = generator.generate("Create a cylindrical vase with a height of 100mm
 # Save to file and convert to STL
 generator.save_to_file("vase.scad")
 ```
+
+### Using Command Line
+
+Generate an example model:
+```bash
+grok-to-stl --example cube --output cube.scad
+```
+
+Generate a custom model:
+```bash
+grok-to-stl --prompt "Create a hexagonal pencil holder with height 100mm" --output holder.scad
+```
+
+Convert to STL:
+```bash
+openscad -o model.stl output.scad
+```
+
+### CLI Options
+
+- `--prompt TEXT`: Natural language description of the model to generate
+- `--example [cube|vase|box]`: Generate a pre-defined example model
+- `--output FILE`: Output file name (default: output.scad)
+- `--api-key KEY`: Grok API key (can also be set via GROK_API_KEY environment variable)
 
 ## 🤝 Contributing
 

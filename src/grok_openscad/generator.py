@@ -25,8 +25,11 @@ class GrokOpenSCAD:
         if not self.api_key:
             raise ValueError("No Grok API key provided. Set GROK_API_KEY environment variable or pass key to constructor.")
         
-        self.api_base = "https://api.grok.x.ai/v1"
+        self.api_base = "https://api.x.ai/v1/chat/completions"
         self.last_generated_code = None
+        self.system_prompt = """You are an OpenSCAD code generation assistant. 
+        You specialize in creating parametric 3D models that are optimized for 3D printing.
+        Always provide complete, well-commented OpenSCAD code that follows best practices."""
     
     def generate(self, prompt: str, parameters: Optional[Dict[str, Any]] = None) -> str:
         """
@@ -34,25 +37,27 @@ class GrokOpenSCAD:
         
         Args:
             prompt (str): Natural language description of the desired 3D model
-            parameters (Optional[Dict[str, Any]]): Additional parameters for generation
+            parameters (Optional[Dict[str, Any]]): Additional parameters like temperature
             
         Returns:
             str: Generated OpenSCAD code
         """
         # Enhance prompt with OpenSCAD-specific context
-        enhanced_prompt = f"""
-        Generate OpenSCAD code for a 3D printable model with the following requirements:
+        user_prompt = f"""
+        Create OpenSCAD code for a 3D printable model with these requirements:
         {prompt}
         
-        Requirements:
-        - Code should be parametric where appropriate
-        - Include helpful comments
-        - Follow OpenSCAD best practices
-        - Ensure the model is 3D printable
+        The code must be:
+        - Parametric where appropriate
+        - Well-commented
+        - Following OpenSCAD best practices
+        - Optimized for 3D printing
+        
+        Provide only the OpenSCAD code without any additional explanation.
         """
         
         try:
-            response = self._call_grok_api(enhanced_prompt, parameters)
+            response = self._call_grok_api(user_prompt, parameters)
             self.last_generated_code = self._extract_code(response)
             return self.last_generated_code
         except Exception as e:
@@ -83,13 +88,26 @@ class GrokOpenSCAD:
             "Content-Type": "application/json"
         }
         
+        messages = [
+            {
+                "role": "system",
+                "content": self.system_prompt
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+        
         data = {
-            "prompt": prompt,
-            "parameters": parameters or {}
+            "messages": messages,
+            "model": "grok-beta",
+            "stream": False,
+            "temperature": parameters.get("temperature", 0.7) if parameters else 0.7
         }
         
         response = requests.post(
-            f"{self.api_base}/completions",
+            self.api_base,
             headers=headers,
             json=data
         )
@@ -100,11 +118,20 @@ class GrokOpenSCAD:
         return response.json()
     
     def _extract_code(self, response: Dict[str, Any]) -> str:
-        """Extract OpenSCAD code from API response."""
-        # Implementation depends on actual Grok API response format
-        # This is a placeholder implementation
+        """Extract OpenSCAD code from API response and clean up code block markers."""
         try:
-            return response.get("choices", [{}])[0].get("text", "").strip()
+            content = response.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
+            
+            # Remove code block markers if present
+            if content.startswith("```openscad"):
+                content = content[len("```openscad"):].strip()
+            elif content.startswith("```"):
+                content = content[3:].strip()
+            
+            if content.endswith("```"):
+                content = content[:-3].strip()
+            
+            return content
         except (KeyError, IndexError) as e:
             raise RuntimeError(f"Failed to extract code from response: {str(e)}")
     

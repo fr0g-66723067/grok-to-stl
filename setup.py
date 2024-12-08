@@ -29,15 +29,16 @@ setup(
     install_requires=[
         "requests>=2.31.0",
         "python-dotenv>=1.0.0",
-        "numpy>=1.24.0",
-        "solidpython>=1.1.3",
     ],
     extras_require={
         "dev": [
             "pytest>=7.4.0",
             "black>=23.3.0",
             "flake8>=6.0.0",
-            "tqdm>=4.65.0",
+        ],
+        "build": [
+            "setuptools>=68.0.0",
+            "wheel>=0.40.0",
         ],
     },
     entry_points={
