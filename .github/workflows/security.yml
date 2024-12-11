@@ -63,9 +63,6 @@ jobs:
         run: semgrep ci
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-          SEMGREP_RULES: >-
-            p/python
-            p/security-audit
 
   codeql:
     name: CodeQL Analysis
