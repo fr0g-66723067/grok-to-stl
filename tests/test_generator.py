@@ -1,6 +1,4 @@
-"""
-Tests for the OpenSCAD code generator.
-"""
+"""Tests for the OpenSCAD code generator."""
 
 import os
 from unittest.mock import MagicMock, patch

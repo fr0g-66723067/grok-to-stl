@@ -1,6 +1,4 @@
-"""
-Command-line interface for Grok-to-STL.
-"""
+"""Command-line interface for Grok-to-STL."""
 
 import argparse
 import os
@@ -10,8 +8,11 @@ from pathlib import Path
 from .generator import GrokOpenSCAD
 
 EXAMPLE_PROMPTS = {
-    "cube": "Create a parametric cube with 30mm sides and rounded corners of radius 2mm",
-    "vase": "Create a cylindrical vase with height 100mm, diameter 50mm, and wall thickness 2mm that can hold water",
+    "cube": ("Create a parametric cube with 30mm sides and rounded corners " "of radius 2mm"),
+    "vase": (
+        "Create a cylindrical vase with height 100mm, diameter 50mm, "
+        "and wall thickness 2mm that can hold water"
+    ),
     "box": """Create a parametric box with:
     - Variable height (default 100mm)
     - Variable width (default 80mm)
@@ -26,13 +27,26 @@ def sanitize_path(filename):
     return Path(os.path.basename(filename))
 
 
+def get_api_key():
+    """Get the API key from environment variable or user input."""
+    api_key = os.getenv("GROK_API_KEY")
+    if not api_key:
+        api_key = input(
+            "Please enter your Grok API key " "(or set it as GROK_API_KEY environment variable): "
+        )
+    return api_key
+
+
 def main():
+    """Execute the main CLI function."""
     parser = argparse.ArgumentParser(
         description="Generate 3D printable models using Grok AI and OpenSCAD"
     )
 
     parser.add_argument(
-        "--prompt", type=str, help="Natural language description of the 3D model to generate"
+        "--prompt",
+        type=str,
+        help="Natural language description of the 3D model to generate",
     )
 
     parser.add_argument(
@@ -42,7 +56,10 @@ def main():
     )
 
     parser.add_argument(
-        "--output", type=str, default="output.scad", help="Output file name (default: output.scad)"
+        "--output",
+        type=str,
+        default="output.scad",
+        help="Output file name (default: output.scad)",
     )
 
     parser.add_argument(
@@ -69,8 +86,8 @@ def main():
 
         print(f"Generating OpenSCAD code for: {prompt}")
 
-        # Generate the code
-        code = generator.generate(prompt)
+        # Generate the code and save it
+        generator.generate(prompt)
 
         # Save to file with sanitized path
         output_path = sanitize_path(args.output)

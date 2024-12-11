@@ -1,6 +1,4 @@
-"""
-Grok-to-STL: Generate 3D printable models using Grok AI and OpenSCAD.
-"""
+"""Grok-to-STL: Generate 3D printable models using Grok AI and OpenSCAD."""
 
 from .generator import GrokOpenSCAD
 
