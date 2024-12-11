@@ -1,4 +1,11 @@
-from setuptools import setup, find_packages
+"""
+Setup configuration for grok-openscad package.
+
+This module contains the package configuration and dependencies required
+for installing and distributing the grok-openscad package.
+"""
+
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -46,4 +53,4 @@ setup(
             "grok-to-stl=grok_openscad.cli:main",
         ],
     },
-) 
+)

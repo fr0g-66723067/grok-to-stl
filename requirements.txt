@@ -8,4 +8,4 @@ black>=23.3.0
 flake8>=6.0.0
 
 # Package building
-setuptools>=68.0.0 
+setuptools>=68.0.0

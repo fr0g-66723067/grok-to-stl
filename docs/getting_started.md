@@ -118,4 +118,4 @@ If you encounter issues:
 - Open an issue on GitHub
 - Check existing issues for solutions
 - Read the [FAQ](./faq.md)
-- Join our community discussions 
+- Join our community discussions

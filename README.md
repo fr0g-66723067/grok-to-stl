@@ -26,7 +26,7 @@ This project demonstrates how to use generative AI (specifically Grok) to create
 
 ## 🛠️ Installation
 
-1. Clone this repository: 
+1. Clone this repository:
 ```bash
 git clone https://github.com/fr0g-66723067/grok-to-stl.git
 cd grok-to-stl

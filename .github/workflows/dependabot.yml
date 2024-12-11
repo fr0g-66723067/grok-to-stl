@@ -10,11 +10,11 @@ updates:
       - "python"
     reviewers:
       - "fr0g-66723067"
-    
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     labels:
       - "dependencies"
-      - "github_actions" 
+      - "github_actions"
