@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Run weekly
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write  # Required for uploading CodeQL results
+
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -30,10 +35,16 @@ jobs:
     - name: Run Safety Check
       run: safety check
 
-    - name: Run CodeQL
+    - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: python
+        queries: security-and-quality
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:python"
