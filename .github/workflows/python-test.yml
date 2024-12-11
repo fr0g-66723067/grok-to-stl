@@ -28,11 +28,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        # Install package with dev dependencies
         pip install -e ".[dev]"
+        # Verify installations
+        pip list | grep pytest
+        pip list | grep coverage
 
     - name: Run tests
       run: |
-        pytest tests/ --cov=grok_openscad --cov-report=xml
+        # Show Python environment info
+        python --version
+        which python
+        # Run tests with coverage
+        python -m pytest tests/ --cov=grok_openscad --cov-report=xml -v
       env:
         GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
 
