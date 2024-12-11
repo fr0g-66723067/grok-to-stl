@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
+      fail-fast: false  # Continue with other versions if one fails
 
     steps:
     - uses: actions/checkout@v4
@@ -25,28 +26,25 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
 
-    - name: Install dependencies
+    - name: Install base dependencies
       run: |
-        python -m pip install --upgrade pip
-        # Install package with dev dependencies
-        pip install -e ".[dev]"
-        # Verify installations
-        pip list | grep pytest
-        pip list | grep coverage
+        python -m pip install --upgrade pip setuptools wheel
+
+    - name: Install package
+      run: |
+        # Install in editable mode without dev dependencies first
+        python -m pip install -e .
+        python -m pip check
+
+    - name: Install dev dependencies
+      run: |
+        # Now install dev dependencies
+        python -m pip install pytest black flake8
+        python -m pip list
 
     - name: Run tests
       run: |
-        # Show Python environment info
         python --version
-        which python
-        # Run tests with coverage
-        python -m pytest tests/ --cov=grok_openscad --cov-report=xml -v
+        python -m pytest tests/ -v
       env:
         GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        files: ./coverage.xml
-        fail_ci_if_error: true
-        verbose: true

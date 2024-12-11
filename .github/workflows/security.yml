@@ -1,12 +1,15 @@
-name: Security Scan
+name: "Security Scan"
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
   schedule:
-    - cron: '0 0 * * 0'  # Run weekly
+    - cron: '30 1 * * 0'
+
+permissions:
+  security-events: write
 
 permissions:
   actions: read
@@ -14,20 +17,32 @@ permissions:
   security-events: write  # Required for uploading CodeQL results
 
 jobs:
-  security:
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
 
-    - name: Install dependencies
+    - name: Install security tools
       run: |
         python -m pip install --upgrade pip
-        pip install bandit safety pytest-cov
+        pip install bandit safety
 
     - name: Run Bandit
       run: bandit -r src/ -ll -ii
