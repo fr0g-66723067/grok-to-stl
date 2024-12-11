@@ -81,6 +81,36 @@ openscad -o model.stl output.scad
 - `--output FILE`: Output file name (default: output.scad)
 - `--api-key KEY`: Grok API key (can also be set via GROK_API_KEY environment variable)
 
+## 🤝 Example Models
+
+Here are some example models generated using Grok-to-STL:
+
+### Parametric Box
+![Parametric Box](examples/basic/box.png)
+
+Generate this box with:
+```bash
+grok-to-stl --example box --output box.scad
+```
+
+### Parametric Cube
+![Parametric Cube](examples/basic/cube.png)
+
+Generate this cube with:
+```bash
+grok-to-stl --example cube --output cube.scad
+```
+
+### Vase
+![Vase](examples/basic/vase.png)
+
+Generate this vase with:
+```bash
+grok-to-stl --example vase --output vase.scad
+```
+
+Each model is fully parametric - you can adjust dimensions and features by modifying the parameters in the generated OpenSCAD file.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.

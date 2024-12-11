@@ -10,7 +10,7 @@ from .generator import GrokOpenSCAD
 
 EXAMPLE_PROMPTS = {
     'cube': "Create a parametric cube with 30mm sides and rounded corners of radius 2mm",
-    'vase': "Create a cylindrical vase with height 100mm, diameter 50mm, and wall thickness 2mm",
+    'vase': "Create a cylindrical vase with height 100mm, diameter 50mm, and wall thickness 2mm that can hold water",
     'box': """Create a parametric box with:
     - Variable height (default 100mm)
     - Variable width (default 80mm)
