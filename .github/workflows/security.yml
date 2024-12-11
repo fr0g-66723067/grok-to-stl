@@ -9,9 +9,6 @@ on:
     - cron: '30 1 * * 0'
 
 permissions:
-  security-events: write
-
-permissions:
   actions: read
   contents: read
   security-events: write  # Required for uploading CodeQL results
