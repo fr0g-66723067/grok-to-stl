@@ -1,5 +1,11 @@
 # AI-Generated 3D Models with Grok and OpenSCAD
 
+[![Tests](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/python-test.yml/badge.svg)](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/python-test.yml)
+[![Lint](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/lint.yml/badge.svg)](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/lint.yml)
+[![Security](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/security.yml/badge.svg)](https://github.com/fr0g-66723067/grok-to-stl/actions/workflows/security.yml)
+[![codecov](https://codecov.io/gh/fr0g-66723067/grok-to-stl/branch/main/graph/badge.svg)](https://codecov.io/gh/fr0g-66723067/grok-to-stl)
+[![PyPI version](https://badge.fury.io/py/grok-to-stl.svg)](https://badge.fury.io/py/grok-to-stl)
+
 This project demonstrates how to use generative AI (specifically Grok) to create parametric 3D models using OpenSCAD for 3D printing. The project aims to bridge the gap between natural language descriptions and 3D printable models.
 
 ## 🚀 Features
