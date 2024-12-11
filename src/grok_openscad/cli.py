@@ -19,6 +19,10 @@ EXAMPLE_PROMPTS = {
     - Wall thickness 2mm""",
 }
 
+def sanitize_path(filename):
+    """Sanitize the output path to prevent path traversal."""
+    return Path(os.path.basename(filename))
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generate 3D printable models using Grok AI and OpenSCAD"
@@ -70,8 +74,8 @@ def main():
         # Generate the code
         code = generator.generate(prompt)
         
-        # Save to file
-        output_path = Path(args.output)
+        # Save to file with sanitized path
+        output_path = sanitize_path(args.output)
         generator.save_to_file(str(output_path))
         
         print(f"\nSuccess! OpenSCAD code has been saved to: {output_path}")

@@ -2,6 +2,7 @@
 Tests for the GrokOpenSCAD generator module.
 """
 
+import os
 import pytest
 from unittest.mock import patch, MagicMock
 from grok_openscad.generator import GrokOpenSCAD
@@ -26,8 +27,20 @@ def test_init_with_provided_key():
     gen = GrokOpenSCAD(api_key='provided_key')
     assert gen.api_key == 'provided_key'
 
-def test_init_without_key():
+def test_init_without_key(monkeypatch):
     """Test initialization without any API key."""
+    # Mock load_dotenv to do nothing
+    monkeypatch.setattr('dotenv.load_dotenv', lambda: None)
+    
+    # Mock os.getenv to always return None for GROK_API_KEY
+    def mock_getenv(key, default=None):
+        if key == 'GROK_API_KEY':
+            return None
+        return os.getenv(key, default)
+    
+    monkeypatch.setattr('os.getenv', mock_getenv)
+    
+    print(f"Environment GROK_API_KEY: '{os.getenv('GROK_API_KEY')}'")
     with pytest.raises(ValueError):
         GrokOpenSCAD()
 
@@ -37,7 +50,11 @@ def test_generate_success(mock_post, generator):
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
-        'choices': [{'text': 'cube([10, 10, 10]);'}]
+        'choices': [{
+            'message': {
+                'content': '```openscad\ncube([10, 10, 10]);\n```'
+            }
+        }]
     }
     mock_post.return_value = mock_response
 

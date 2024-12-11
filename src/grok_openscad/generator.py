@@ -22,6 +22,7 @@ class GrokOpenSCAD:
         """
         load_dotenv()
         self.api_key = api_key or os.getenv('GROK_API_KEY')
+        print(f"self.api_key value: '{self.api_key}'")
         if not self.api_key:
             raise ValueError("No Grok API key provided. Set GROK_API_KEY environment variable or pass key to constructor.")
         
