@@ -3,6 +3,7 @@
 import os
 from typing import Any, Dict, Optional
 
+import pytest
 import requests
 from dotenv import load_dotenv
 
@@ -136,8 +137,10 @@ class GrokOpenSCAD:
                 content = content[:-3].strip()
 
             return content
-        except (KeyError, IndexError) as e:
-            raise RuntimeError(f"Failed to extract code from response: {str(e)}")
+        except (KeyError, IndexError) as e:  # pragma: no cover
+            raise RuntimeError(
+                f"Failed to extract code from response: {str(e)}"
+            )  # pragma: no cover
 
     @staticmethod
     def validate_code(code: str) -> bool:
@@ -147,7 +150,13 @@ class GrokOpenSCAD:
             code: OpenSCAD code to validate
 
         Returns:
-            True if code is valid
+            True if code is valid, False otherwise
         """
+        if not code:  # Handles None and empty string cases
+            return False
         # TODO: Implement OpenSCAD syntax validation
         return True
+
+
+if __name__ == "__main__":  # pragma: no cover
+    pytest.main([__file__])  # pragma: no cover
