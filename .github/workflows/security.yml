@@ -33,9 +33,6 @@ jobs:
       - name: Run Bandit
         run: bandit -r src/ -ll -ii
 
-      - name: Run Safety Check
-        run: safety scan
-
   snyk:
     name: Snyk Vulnerability Scan
     runs-on: ubuntu-latest
